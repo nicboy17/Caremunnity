@@ -1,4 +1,8 @@
 var User = require('../models/user');
+var Post = require('../models/post');
+var Goal = require('../models/goal');
+var Medication = require('../models/medication');
+var Notify = require('../models/notification');
 
 module.exports = function(router) {
 
@@ -40,6 +44,22 @@ module.exports = function(router) {
                 res.json({'success': 'false', 'message':'no users found'});
             }
         });
+    });
+
+    router.post('/addFriend', function(req, res) {
+        User.addFriend(req.body.user_id, req.body.friend_id, function(err, result) {
+
+        });
+    });
+
+    router.post('/removeFriend', function(req, res) {
+        User.removeFriend(req.body.user_id, req.body.friend_id, function(err, result) {
+            
+        });
+    });
+
+    router.post('/addusermedicationtaken', function(req, res) {
+        
     });
 
     return router;

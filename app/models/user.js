@@ -31,6 +31,12 @@ var User = {
     },
     following: function(user_id, other_id, callback) {
         return db.query('select user_2_id from relationship where user_1_id = ?', [user_id], callback);
+    },
+    addFriend: function(user_id, other_id, callback) {
+        return db.query('insert into relationships (user_id_1, user_id_2) values (?, ?)', [user_id, other_id], callback);
+    },
+    removeFriend: function(user_id, remove_id, callback) {
+        return db.query('delete from relationship where user_1_id = ? and user_2_id = ?', [remove_id, other_id], callback);
     }
 };  
 module.exports = User;
