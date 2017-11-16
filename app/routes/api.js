@@ -5,7 +5,6 @@ module.exports = function(router) {
     router.post('/login', function(req, res) {
         console.log(req.body);
         User.authenticate(req.body.username, req.body.password, function(err, result) {
-            if (err) throw err;
             if(result.length == 1 && result[0].status == 2) {
                 User.login(result[0].user_id, function(err) {
                     if (err) throw err;
@@ -22,21 +21,24 @@ module.exports = function(router) {
     });
 
     router.post('/logout', function(req, res) {
-        console.log(req.body);
-        User.logout(req.body.id, function(err) {
+        User.logout(req.body.user_id, function(err) {
             if (err) throw err;
-            else {
+            if(req.body.id) {
                 res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'enter user id'});
             }
         });
     });
 
     router.post('/findfriends', function(req, res) {
-        console.log(req.body);
         User.findFriends(req.body.user_id, req.body.first, req.body.last, function(err, result) {
             if (err) throw err;
-            res.json({'success': 'true', users: result});
-            
+            if(result[0]) {
+                res.json({'success': 'true', users: result});
+            } else {
+                res.json({'success': 'false', 'message':'no users found'});
+            }
         });
     });
 

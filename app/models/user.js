@@ -22,7 +22,7 @@ var User = {
         }
     },
     checkFollowing: function(user_id, other_id, callback) {
-        db.query('select relationship_id from relationship where user_1_id = ? and user_2_id = ?', [user_id, other_id], callback);
+        return db.query('select relationship_id from relationship where user_1_id = ? and user_2_id = ?', [user_id, other_id], callback);
     }
 };  
 module.exports = User;
