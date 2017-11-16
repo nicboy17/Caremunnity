@@ -11,18 +11,26 @@ var User = {
         return db.query("update users set status = 2 where user_id = ?;", [id], callback);
     },
     findFriends: function(id, first, last, callback) {
-        if(first != "" && last != "") { 
-            return db.query('select user_id, first, last from users where first = ? and last = ? and user_id <> ?', [first, last, id], callback);
+        if(first != "" && last != "") {
+            return db.query(
+            'select users.user_id, users.first, users.last, IF(relationship.relationship_id IS NULL, false, true) as following from users LEFT JOIN relationship ON (relationship.user_1_id = ? and relationship.user_2_id = users.user_id) WHERE users.first = ? and users.last = ? and users.user_id <> ?',
+             [id, first, last, id], callback);
         } else if(first != "" && last == "") {
-            return db.query('select user_id, first, last from users where first = ? and user_id <> ?', [first, id], callback);
+            return db.query(
+            'select users.user_id, users.first, users.last, IF(relationship.relationship_id IS NULL, false, true) as following from users LEFT JOIN relationship ON (relationship.user_1_id = ? and relationship.user_2_id = users.user_id) WHERE users.first = ? and users.user_id <> ?',
+            [id, first, id], callback);
         } else if(first == "" && last != "") {
-            return db.query('select user_id, first, last from users where last = ? and user_id <> ?', [last, id], callback);
+            return db.query(
+            'select users.user_id, users.first, users.last, IF(relationship.relationship_id IS NULL, false, true) as following from users LEFT JOIN relationship ON (relationship.user_1_id = ? and relationship.user_2_id = users.user_id) WHERE users.last = ? and users.user_id <> ?',
+            [id, last, id], callback);
         } else {
-            return db.query('select user_id, first, last from users where user_id <> ?', [id], callback);
+            return db.query(
+            'select users.user_id, users.first, users.last, IF(relationship.relationship_id IS NULL, false, true) as following from users LEFT JOIN relationship ON (relationship.user_1_id = ? and relationship.user_2_id = users.user_id) WHERE users.user_id <> ?',
+            [id, id], callback);
         }
     },
-    checkFollowing: function(user_id, other_id, callback) {
-        return db.query('select relationship_id from relationship where user_1_id = ? and user_2_id = ?', [user_id, other_id], callback);
+    following: function(user_id, other_id, callback) {
+        return db.query('select user_2_id from relationship where user_1_id = ?', [user_id], callback);
     }
 };  
 module.exports = User;
