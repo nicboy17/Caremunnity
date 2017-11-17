@@ -24,6 +24,9 @@ module.exports = function(router) {
     });
 
     router.post('/logout', function(req, res) {
+        if(typeof req.body.user_id != "number") {
+            res.json({'success': 'false', 'message':'please valid enter user id'});
+        }
         User.logout(req.body.user_id, function(err) {
             if (err) throw err;
             if(req.body.user_id) {
@@ -47,13 +50,23 @@ module.exports = function(router) {
 
     router.post('/addFriend', function(req, res) {
         User.addFriend(req.body.user_id, req.body.friend_id, function(err, result) {
-
+            if (err) throw err;
+            if(result[0]) {
+                res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'did not add friend'});
+            }
         });
     });
 
     router.post('/removeFriend', function(req, res) {
         User.removeFriend(req.body.user_id, req.body.friend_id, function(err, result) {
-            
+            if (err) throw err;
+            if(result[0]) {
+                res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'did not remove friend'});
+            }
         });
     });
 
@@ -68,7 +81,7 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/usermedicationtaken', function(req, res) {
+    router.post('/medicationtaken', function(req, res) {
         
     });
 
