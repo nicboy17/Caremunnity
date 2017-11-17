@@ -5,20 +5,17 @@ var Notify = {
         return db.query('insert into notifications (user_id, goal_id, medication_id, title, start_date, end_date, alert_sunday, alert_monday, alert_tuesday, alert_wednesday, alert_thursday, alert_friday, alert_saturday, alert) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         ,[user_id, goal_id, medication_id, title, start_day, end_day, sunday, monday, tuesday, wednesday, thursday, friday, saturday, alert], callback);  
     },
-    deleteNotification: function(callback) {
-        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
+    deleteNotification: function(notification_id, callback) {
+        return db.query('',[username, password], callback);  
     },
-    editNotification: function(callback) {
-        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
+    editNotification: function(notification_id, user_id, goal_id, medication_id, title, start_day, end_day, sunday, monday, tuesday, wednesday, thursday, friday, saturday, alert, callback) {
+        return db.query('',[username, password], callback);  
     },
-    getFirstNotification: function(callback) {
-        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
+    getFirstNotification: function(user_id, day, time, callback) {
+        return db.query('',[username, password], callback);  
     },
-    getMedicationtNotifications: function(callback) {
-        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
-    },
-    getGoalNotifications: function(callback) {
-        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
+    getNotifications: function(callback) {
+        return db.query('',[username, password], callback);  
     }
 };  
 module.exports = Notify;

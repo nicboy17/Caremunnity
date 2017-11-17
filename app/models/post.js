@@ -1,8 +1,11 @@
 var db = require('../../db');
 
 var Post = {  
-    createPost: function(user_id, content, goal_id) {
+    createPost: function(user_id, content, goal_id, callback) {
         return db.query('insert into posts (user_id, content, goal_id) values (?, ?, ?)',[user_id, content, goal_id], callback);  
+    },
+    postExists: function(post_id, callback) {
+        return db.query('select exists(select * from posts where post_id = ?)',[post_id], callback);  
     },
     deletePost: function(post_id, callback) {
         return db.query('delete from posts where posts.post_id = ?',[post_id], callback);  
