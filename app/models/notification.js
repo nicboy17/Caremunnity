@@ -13,7 +13,10 @@ var Notify = {
     getFirstNotification: function(callback) {
         //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
     },
-    getNotifications: function(callback) {
+    getMedicationtNotifications: function(callback) {
+        //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
+    },
+    getGoalNotifications: function(callback) {
         //return db.query('Select user_id, permissions, status from users where username = ? and password = password;',[username, password], callback);  
     }
 };  

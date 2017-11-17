@@ -58,7 +58,7 @@ module.exports = function(router) {
         });
     });
 
-    router.get('/getposts/:id', function(req, res) {
+    router.get('/posts/:id', function(req, res) {
         Post.getPosts(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
@@ -69,7 +69,7 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/addusermedicationtaken', function(req, res) {
+    router.post('/usermedicationtaken', function(req, res) {
         
     });
 
