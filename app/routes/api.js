@@ -48,24 +48,51 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/addFriend', function(req, res) {
-        User.addFriend(req.body.user_id, req.body.friend_id, function(err, result) {
-            if (err) throw err;
-            if(result[0]) {
-                res.json({'success': 'true'});
-            } else {
-                res.json({'success': 'false', 'message':'did not add friend'});
+    router.post('/addfriend', function(req, res) {
+        User.checkFollowing(req.body.user_id, req.body.friend_id, function(err, result) {
+            for(key in result[0]) {
+                if(result[0][key] != 1) {
+                    User.addFriend(req.body.user_id, req.body.friend_id, function(err, result) {
+                        if (err) throw err;
+                        if(result) {
+                            res.json({'success': 'true', 'id': result.insertId});
+                        } else {
+                            res.json({'success': 'false', 'message':'did not add friend'});
+                        }
+                    });
+                } else {
+                    res.json({'success': 'false', 'message':'user already following'});
+                }
             }
         });
     });
 
-    router.post('/removeFriend', function(req, res) {
-        User.removeFriend(req.body.user_id, req.body.friend_id, function(err, result) {
+    router.post('/removefriend', function(req, res) {
+        User.checkFollowing(req.body.user_id, req.body.friend_id, function(err, result) {
+            for(key in result[0]) {
+                if(result[0][key] == 1) {
+                    User.removeFriend(req.body.user_id, req.body.friend_id, function(err, result) {
+                        if (err) throw err;
+                        if(result[0]) {
+                            res.json({'success': 'true'});
+                        } else {
+                            res.json({'success': 'false', 'message':'did not remove friend'});
+                        }
+                    });
+                } else {
+                    res.json({'success': 'false', 'message':'user not following'});
+                }
+            }
+        });
+    });
+
+    router.get('/friends/:id', function(req, res) {
+        User.getFriends(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json({'success': 'true'});
+                res.json({'success': 'true', friends: result});
             } else {
-                res.json({'success': 'false', 'message':'did not remove friend'});
+                res.json({'success': 'false', 'message':'no friends found'});
             }
         });
     });
