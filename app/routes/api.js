@@ -7,7 +7,6 @@ var Notify = require('../models/notification');
 module.exports = function(router) {
 
     router.post('/login', function(req, res) {
-        console.log(req.body);
         User.authenticate(req.body.username, req.body.password, function(err, result) {
             if(result.length == 1 && result[0].status == 2) {
                 User.login(result[0].user_id, function(err) {
@@ -27,7 +26,7 @@ module.exports = function(router) {
     router.post('/logout', function(req, res) {
         User.logout(req.body.user_id, function(err) {
             if (err) throw err;
-            if(req.body.id) {
+            if(req.body.user_id) {
                 res.json({'success': 'true'});
             } else {
                 res.json({'success': 'false', 'message':'enter user id'});
@@ -55,6 +54,12 @@ module.exports = function(router) {
     router.post('/removeFriend', function(req, res) {
         User.removeFriend(req.body.user_id, req.body.friend_id, function(err, result) {
             
+        });
+    });
+
+    router.get('/friends:/id', function(req, res) {
+        User.getFriends(req.params.id, function(err, result) {
+
         });
     });
 
