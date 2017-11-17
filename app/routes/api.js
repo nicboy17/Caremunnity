@@ -58,6 +58,17 @@ module.exports = function(router) {
         });
     });
 
+    router.get('/getposts/:id', function(req, res) {
+        Post.getPosts(req.params.id, function(err, result) {
+            if (err) throw err;
+            if(result[0]) {
+                res.json({'success': 'true', posts: result});
+            } else {
+                res.json({'success': 'false', 'message':'no posts found'});
+            }
+        });
+    });
+
     router.post('/addusermedicationtaken', function(req, res) {
         
     });
