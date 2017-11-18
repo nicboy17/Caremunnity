@@ -296,7 +296,7 @@ module.exports = function(router) {
                                 }
                             });
                         } else {
-                            res.json({'success': 'true', 'id': result.insertId);
+                            res.json({'success': 'true', 'id': result.insertId});
                         }
                     }
                 });
