@@ -1,7 +1,7 @@
 var express             = require('express');
 var app                 = express();
 var server              = require('http').createServer(app);  
-var port                = process.env.PORT || 5000;
+var port                = process.env.PORT || 4000;
 var morgan              = require('morgan');
 var request             = require('request');
 var mysql               = require('mysql');
