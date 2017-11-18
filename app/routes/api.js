@@ -252,8 +252,8 @@ module.exports = function(router) {
         });
     });
 
-    router.get('/medication', function(req, res) {
-        Medication.getMedication(req.body.medication_id, function(err, result) {
+    router.get('/medication/:id', function(req, res) {
+        Medication.getMedication(req.params.id, function(err, result) {
             if (err) throw err;
             
             if(result[0]) {
@@ -281,7 +281,25 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                Goal.checkGoalExists(req.body.user_id,req.body.goal_id, function(err, row){
+                    if (err) throw err;
+
+                    for(key in row[0]) {
+                        if(row[0][key] != 1) {
+                            Goal.createGoal(req.body.user_id,req.body.goal_id, function(err, gal) {
+                                if (err) throw err;
+
+                                if(gal.insertId) {
+                                    res.json({'success': 'true', 'message':'notification created'});
+                                } else {
+                                    res.json({'false': 'true', 'message':'user goal not created'});
+                                }
+                            });
+                        } else {
+                            res.json({'success': 'true', 'message':'notification created'});
+                        }
+                    }
+                });
             } else {
                 res.json({'success': 'false', 'message':'notification not created'});
             }
@@ -301,11 +319,29 @@ module.exports = function(router) {
     });
 
     router.post('/editnotification', function(req, res) {
-        Notify.createNotification(req.body.notification_id, req.body.user_id, req.body.goal_id, req.body.medication_id, req.body.title, req.body.start_day, req.body.end_day, req.body.alert_sunday, req.body.alert_monday, req.body.alert_tuesday, req.body.alert_wednesday, req.body.alert_thursday, req.body.alert_friday, req.body.alert_saturday, req.body.alert, function(err, result) {
+        Notify.editNotification(req.body.notification_id, req.body.user_id, req.body.goal_id, req.body.medication_id, req.body.title, req.body.start_day, req.body.end_day, req.body.alert_sunday, req.body.alert_monday, req.body.alert_tuesday, req.body.alert_wednesday, req.body.alert_thursday, req.body.alert_friday, req.body.alert_saturday, req.body.alert, function(err, result) {
             if (err) throw err;
             
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                Goal.checkGoalExists(req.body.user_id,req.body.goal_id, function(err, row){
+                    if (err) throw err;
+
+                    for(key in row[0]) {
+                        if(row[0][key] != 1) {
+                            Goal.createGoal(req.body.user_id,req.body.goal_id, function(err, gal) {
+                                if (err) throw err;
+
+                                if(gal.insertId) {
+                                    res.json({'success': 'true', 'message':'notification updated'});
+                                } else {
+                                    res.json({'false': 'true', 'message':'user goal not created'});
+                                }
+                            });
+                        } else {
+                            res.json({'success': 'true', 'message':'notification updated'});
+                        }
+                    }
+                });
             } else {
                 res.json({'success': 'false', 'message':'notification not updated'});
             }
