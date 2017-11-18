@@ -37,12 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
                 RequestQueue MyRequestQueue = Volley.newRequestQueue(MainActivity.this);
 
-                String url = "http://yourdomain.com/path";
-                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                String url = "http://localhost:5000/";
+                StringRequest MyStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //This code is executed if the server responds, whether or not the response contains data.
                         //The String 'response' contains the server's response.
+                        Toast.makeText(getApplicationContext(),
+                                "Server responded!", Toast.LENGTH_LONG).show();
+
                     }
                 }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
                     @Override
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }) {
                     protected Map<String, String> getParams() {
                         Map<String, String> MyData = new HashMap<String, String>();
-                        MyData.put("Field", "Value"); //Add the data you'd like to send to the server.
+                        MyData.put("http://localhost:5000/api/friends/1", "http://localhost:5000/api/friends/1"); //Add the data you'd like to send to the server.
                         return MyData;
                     }
                 };
