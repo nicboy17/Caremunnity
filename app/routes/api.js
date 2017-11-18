@@ -102,7 +102,7 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                res.json({'success': 'true', 'id': result.insertId});
             } else {
                 res.json({'success': 'false', 'message':'post not created'});
             }
@@ -290,13 +290,13 @@ module.exports = function(router) {
                                 if (err) throw err;
 
                                 if(gal.insertId) {
-                                    res.json({'success': 'true', 'message':'notification created'});
+                                    res.json({'success': 'true', 'id': result.insertId});
                                 } else {
                                     res.json({'false': 'true', 'message':'user goal not created'});
                                 }
                             });
                         } else {
-                            res.json({'success': 'true', 'message':'notification created'});
+                            res.json({'success': 'true', 'id': result.insertId);
                         }
                     }
                 });
