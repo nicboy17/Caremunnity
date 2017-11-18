@@ -240,8 +240,112 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/medicationtaken', function(req, res) {
-        
+    router.get('/accomplishments/:id', function(req, res) {
+        Goal.getAccomplishments(req.params.id, function(err, result) {
+            if (err) throw err;
+
+            if(result) {
+                res.json({'success': 'true', 'accomplishments': result});
+            } else {
+                res.json({'success': 'false', 'message':'no acommplishments found'});
+            }
+        });
+    });
+
+    router.get('/medication', function(req, res) {
+        Medication.getMedication(req.body.medication_id, function(err, result) {
+            if (err) throw err;
+            
+            if(result) {
+                res.json({'success': 'true', 'medication': result});
+            } else {
+                res.json({'success': 'false', 'message':'no medication found'});
+            }
+        })
+    });
+
+    router.get('/medications/:id', function(req, res) {
+        Medication.getUserMedications(req.params.id, function(err, result) {
+            if (err) throw err;
+            
+            if(result) {
+                res.json({'success': 'true', 'medication': result});
+            } else {
+                res.json({'success': 'false', 'message':'no medication found'});
+            }
+        });
+    });
+
+    router.post('/notification', function(req, res) {
+        Notify.createNotification(req.body.user_id, req.body.goal_id, req.body.medication_id, req.body.title, req.body.start_day, req.body.end_day, req.body.alert_sunday, req.body.alert_monday, req.body.alert_tuesday, req.body.alert_wednesday, req.body.alert_thursday, req.body.alert_friday, req.body.alert_saturday, req.body.alert, function(err, result) {
+            if (err) throw err;
+            
+            if(result.affectedRows > 0) {
+                res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'notification not created'});
+            }
+        });
+    });
+
+    router.delete('/notification', function(req, res) {
+        Notify.createNotification(req.body.notification_id, function(err, result) {
+            if (err) throw err;
+            
+            if(result.affectedRows > 0) {
+                res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'notification not deleted'});
+            }
+        });
+    });
+
+    router.post('/editnotification', function(req, res) {
+        Notify.createNotification(req.body.notification_id, req.body.user_id, req.body.goal_id, req.body.medication_id, req.body.title, req.body.start_day, req.body.end_day, req.body.alert_sunday, req.body.alert_monday, req.body.alert_tuesday, req.body.alert_wednesday, req.body.alert_thursday, req.body.alert_friday, req.body.alert_saturday, req.body.alert, function(err, result) {
+            if (err) throw err;
+            
+            if(result.affectedRows > 0) {
+                res.json({'success': 'true'});
+            } else {
+                res.json({'success': 'false', 'message':'notification not updated'});
+            }
+        });
+    });
+
+    router.get('/notification/:id', function(req, res) {
+        Notify.getNotification(req.params.id, function(err, result) {
+            if (err) throw err;
+
+            if(result) {
+                res.json({'success': 'true', 'notifications': result});
+            } else {
+                res.json({'success': 'false', 'message':'no notifications found'});
+            }
+        });
+    });
+
+    router.get('/firstnotification/:id', function(req, res) {
+        Notify.getFirstNotification(req.params.id, function(err, result) {
+            if (err) throw err;
+            
+            if(result) {
+                res.json({'success': 'true', 'notifications': result});
+            } else {
+                res.json({'success': 'false', 'message':'no notifications found'});
+            }
+        });
+    });
+
+    router.post('/notifications', function(req, res) {
+        Notify.getNotifications(req.body.user_id, req.body.date, function(err, result) {
+            if (err) throw err;
+            
+            if(result) {
+                res.json({'success': 'true', 'notifications': result});
+            } else {
+                res.json({'success': 'false', 'message':'no notifications found'});
+            }
+        });
     });
 
     return router;
