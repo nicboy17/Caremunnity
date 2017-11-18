@@ -168,7 +168,7 @@ module.exports = function(router) {
         Goal.getGoals(function(err, result) {
             if (err) throw err;
             
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'goals': result});
             } else {
                 res.json({'success': 'false', 'message':'no goals found'});
@@ -180,7 +180,7 @@ module.exports = function(router) {
         Goal.getUserGoals(req.params.user_id, function(err, result) {
             if (err) throw err;
             
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'goals': result});
             } else {
                 res.json({'success': 'false', 'message':'no goals found'});
@@ -232,7 +232,7 @@ module.exports = function(router) {
         Goal.getAccomplishments(req.params.id, function(err, result) {
             if (err) throw err;
 
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'accomplishments': result});
             } else {
                 res.json({'success': 'false', 'message':'no acommplishments found'});
@@ -244,7 +244,7 @@ module.exports = function(router) {
         Goal.getAccomplishments(req.params.id, function(err, result) {
             if (err) throw err;
 
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'accomplishments': result});
             } else {
                 res.json({'success': 'false', 'message':'no acommplishments found'});
@@ -256,7 +256,7 @@ module.exports = function(router) {
         Medication.getMedication(req.body.medication_id, function(err, result) {
             if (err) throw err;
             
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'medication': result});
             } else {
                 res.json({'success': 'false', 'message':'no medication found'});
@@ -268,7 +268,7 @@ module.exports = function(router) {
         Medication.getUserMedications(req.params.id, function(err, result) {
             if (err) throw err;
             
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'medication': result});
             } else {
                 res.json({'success': 'false', 'message':'no medication found'});
@@ -316,7 +316,7 @@ module.exports = function(router) {
         Notify.getNotification(req.params.id, function(err, result) {
             if (err) throw err;
 
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'notifications': result});
             } else {
                 res.json({'success': 'false', 'message':'no notifications found'});
@@ -331,7 +331,7 @@ module.exports = function(router) {
             if(result) {
                 res.json({'success': 'true', 'notifications': result});
             } else {
-                res.json({'success': 'false', 'message':'no notifications found'});
+                res.json({'success': 'false', 'message':'no notifications today'});
             }
         });
     });
@@ -340,7 +340,7 @@ module.exports = function(router) {
         Notify.getNotifications(req.body.user_id, req.body.date, function(err, result) {
             if (err) throw err;
             
-            if(result) {
+            if(result[0]) {
                 res.json({'success': 'true', 'notifications': result});
             } else {
                 res.json({'success': 'false', 'message':'no notifications found'});
