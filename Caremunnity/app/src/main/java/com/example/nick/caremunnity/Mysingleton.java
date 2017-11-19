@@ -1,4 +1,4 @@
-package com.example.nmajor.caremunnity;
+package com.example.nick.caremunnity;
 
 import android.content.Context;
 
@@ -35,3 +35,4 @@ public class Mysingleton {
         requestQueue.add(request);
     }
 }
+

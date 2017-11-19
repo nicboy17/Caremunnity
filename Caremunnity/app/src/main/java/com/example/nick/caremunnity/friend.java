@@ -1,17 +1,14 @@
-package com.example.nmajor.caremunnity;
+package com.example.nick.caremunnity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.widget.ImageView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 
 public class friend {
     private String name;

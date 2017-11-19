@@ -1,4 +1,4 @@
-package com.example.nmajor.caremunnity;
+package com.example.nick.caremunnity;
 
 import org.junit.Test;
 
