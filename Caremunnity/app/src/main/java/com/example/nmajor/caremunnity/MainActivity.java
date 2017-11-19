@@ -1,5 +1,6 @@
 package com.example.nmajor.caremunnity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,23 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     Button button;
-    TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        button = (Button) findViewById(R.id.bn);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                startActivity(new Intent(MainActivity.this, DisplayFriends.class));
+            }
+        });
+    }
+
+
+    /*TextView textView;
     String server_url = "http://74.15.46.198:4000/api/friends/1";
     RequestQueue requestQueue;
 
@@ -33,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.bn);
         textView = (TextView)findViewById(R.id.txt);
 
-        /*Cache cache = new DiskBasedCache(getCacheDir(), 1024*1024);
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024*1024);
         Network network = new BasicNetwork(new HurlStack());
         requestQueue = new RequestQueue(cache, network);
-        requestQueue.start();*/
+        requestQueue.start();
 
         button.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -58,5 +75,7 @@ public class MainActivity extends AppCompatActivity {
                Mysingleton.getInstance(getApplicationContext()).addToRequestque(jsonRequest);
            }
         });
-    }
+    }*/
+
+
 }
