@@ -90,7 +90,7 @@ module.exports = function(router) {
         User.getFriends(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json({'success': 'true', friends: result});
+                res.json(result);
             } else {
                 res.json({'success': 'false', 'message':'no friends found'});
             }
