@@ -11,19 +11,40 @@ import com.android.volley.toolbox.ImageRequest;
 import org.json.JSONArray;
 
 public class friend {
+    private int id;
     private String name;
+    private String email;
     private Bitmap photo;
+
+    public friend() {
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public Bitmap getPhoto() {
         return photo;
     }
 
+    public void setId(int x) {
+        id = x;
+    }
+
     public void setName(String x, String y) {
         name = x + " " + y;
+    }
+
+    public void setEmail(String x) {
+        email = x;
     }
 
     public void setPhoto(String x, Context context) {

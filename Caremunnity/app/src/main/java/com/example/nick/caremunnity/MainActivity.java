@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new RecyclerAdapter(backgroundTask(), this);
-        recyclerView.setAdapter(adapter);
+        //adapter = new RecyclerAdapter(backgroundTask(), this);
+        //recyclerView.setAdapter(adapter);
     }
 
     private ArrayList<friend> backgroundTask() {
@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 jsonObject = response.getJSONObject(count);
                                 friend f = new friend();
+                                f.setId(Integer.parseInt(jsonObject.getString("user_id")));
                                 f.setName(jsonObject.getString("first"), jsonObject.getString("last"));
+                                f.setEmail(jsonObject.getString("email"));
                                 f.setPhoto(jsonObject.getString("picture"), MainActivity.this);
                                 arrayList.add(f);
                                 count ++;
