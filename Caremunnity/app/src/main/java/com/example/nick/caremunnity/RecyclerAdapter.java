@@ -1,17 +1,12 @@
-package com.example.nmajor.caremunnity;
+package com.example.nick.caremunnity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 
 import java.util.ArrayList;
 
@@ -53,3 +48,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
     }
 }
+
