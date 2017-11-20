@@ -29,7 +29,7 @@ public class Page4Fragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    final ArrayList<friend> arrayList = new ArrayList<>();
+    ArrayList<friend> arrayList = new ArrayList<>();
 
     private Button searchBtn;
     @Override
@@ -39,8 +39,8 @@ public class Page4Fragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-
         searchBtn = (Button) rootView.findViewById(R.id.searchBtn);
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -48,7 +48,6 @@ public class Page4Fragment extends Fragment {
                 adapter = new RecyclerAdapter(backgroundTask(), getActivity().getApplicationContext());
                 recyclerView.setAdapter(adapter);
             }
-
 
         });
         return rootView;
@@ -59,23 +58,21 @@ public class Page4Fragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Toast.makeText(getActivity().getApplicationContext(),
-                                response.toString(), Toast.LENGTH_LONG).show();
-
-                        /*int count = 0;
+                        int count = 0;
                         while(count < response.length()) {
                             JSONObject jsonObject = null;
                             try {
                                 jsonObject = response.getJSONObject(count);
-                                friend f = new friend(Integer.parseInt(jsonObject.getString("user_id")),
+                                friend f = new friend(Integer.parseInt(jsonObject.getString("user_id").toString()),
                                         jsonObject.getString("first"), jsonObject.getString("last"),
-                                        jsonObject.getString("email"), jsonObject.getString("picture"), getActivity().getApplicationContext());
+                                        jsonObject.getString("email"), jsonObject.getString("picture"),
+                                        getActivity().getApplicationContext());
                                 arrayList.add(f);
                                 count ++;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        }*/
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
