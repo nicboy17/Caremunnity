@@ -1,6 +1,6 @@
 var multer = require('multer');
 var path = require('path');
-var uploadFolder = "../../public/images"
+var uploadFolder = "./public/images"
 var User = require('../models/user');
 var Post = require('../models/post');
 var Goal = require('../models/goal');
@@ -93,7 +93,7 @@ module.exports = function(router) {
         User.getFriends(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json({'success': 'true', 'friends': result});
+                res.json(result);
             } else {
                 res.json({'success': 'false', 'message':'no friends found'});
             }
