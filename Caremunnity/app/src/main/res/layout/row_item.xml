@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="#BBDEFB"
-    android:orientation="vertical">
+    android:background="#BBDEFB">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:text="name"
         android:textSize="18dp"

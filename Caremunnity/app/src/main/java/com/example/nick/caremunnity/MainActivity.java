@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        //adapter = new RecyclerAdapter(backgroundTask(), this);
-        //recyclerView.setAdapter(adapter);
+        adapter = new RecyclerAdapter(backgroundTask(), this);
+        recyclerView.setAdapter(adapter);
     }
 
     private ArrayList<friend> backgroundTask() {
