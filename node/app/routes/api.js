@@ -1,3 +1,6 @@
+var multer = require('multer');
+var path = require('path');
+var uploadFolder = "../../public/images"
 var User = require('../models/user');
 var Post = require('../models/post');
 var Goal = require('../models/goal');
@@ -90,7 +93,7 @@ module.exports = function(router) {
         User.getFriends(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json(result);
+                res.json({'success': 'true', 'friends': result});
             } else {
                 res.json({'success': 'false', 'message':'no friends found'});
             }
@@ -383,6 +386,32 @@ module.exports = function(router) {
             }
         });
     });
+
+    var newFile;
+    var storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            callback(null, uploadFolder)
+        },
+        filename: function(req, file, callback) {
+            newFile = file.fieldname +'-'+ Date.now() + path.extname(file.originalname);
+            callback(null, newFile)
+        }
+    });
+
+    var upload = multer({storage: storage,
+        fileFilter: function(req, file, callback) {
+            var ext = path.extname(file.originalname)
+            if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+                return callback(res.end('Only images are allowed'), null)
+            }
+            callback(null, true)
+        }
+    });
+
+    router.post('/upload', upload.single('avatar'), function(req, res) {
+        console.log(req.body.user_id);
+        res.end("done");
+    })
 
     return router;
 }
