@@ -11,31 +11,28 @@ module.exports = function(router) {
 
     router.post('/login', function(req, res) {
         User.authenticate(req.body.username, req.body.password, function(err, result) {
-            if(result.length == 1 && result[0].status == 2) {
-                User.login(result[0].user_id, function(err) {
-                    if (err) throw err;
-                });
-                res.json({'success': 'true', 'user_id':result[0].user_id, 'permissions':result[0].permissions});
-            } else {
+            if(result[0]) {
                 if(result[0].status == 1) {
-                    res.json({'success': 'false', 'message':'user already logged in'});
+                    res.json({'success': false, 'message':'user already logged in'});
                 } else {
-                    res.json({'success': 'false', 'message':'user not found'});
+                    User.login(result[0].user_id, function(err) {
+                        if (err) throw err;
+                    });
+                    res.json({'success': true, 'user_id':result[0].user_id, 'first':result[0].first, 'last':result[0].last, 'email':result[0].email, 'username':result[0].username, 'password':result[0].password, 'picture':result[0].picture, 'permissions':result[0].permissions});
                 }
+            } else {
+                res.json({'success': false, 'message':'user not found'});
             }
         });
     });
 
     router.post('/logout', function(req, res) {
-        if(typeof req.body.user_id != "number") {
-            res.json({'success': 'false', 'message':'please valid enter user id'});
-        }
         User.logout(req.body.user_id, function(err) {
             if (err) throw err;
             if(req.body.user_id) {
-                res.json({'success': 'true'});
+                res.json({'success': true});
             } else {
-                res.json({'success': 'false', 'message':'enter user id'});
+                res.json({'success': false, 'message':'enter user id'});
             }
         });
     });
@@ -44,9 +41,9 @@ module.exports = function(router) {
         User.findFriends(req.body.user_id, req.body.first, req.body.last, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json({'success': 'true', users: result});
+                res.json({'success': true, users: result});
             } else {
-                res.json({'success': 'false', 'message':'no users found'});
+                res.json({'success': false, 'message':'no users found'});
             }
         });
     });
@@ -58,13 +55,13 @@ module.exports = function(router) {
                     User.addFriend(req.body.user_id, req.body.friend_id, function(err, row) {
                         if (err) throw err;
                         if(row) {
-                            res.json({'success': 'true', 'id': row.insertId});
+                            res.json({'success': true, 'id': row.insertId});
                         } else {
-                            res.json({'success': 'false', 'message':'did not add friend'});
+                            res.json({'success': false, 'message':'did not add friend'});
                         }
                     });
                 } else {
-                    res.json({'success': 'false', 'message':'user already following'});
+                    res.json({'success': false, 'message':'user already following'});
                 }
             }
         });
@@ -77,13 +74,13 @@ module.exports = function(router) {
                     User.removeFriend(req.body.user_id, req.body.friend_id, function(err, row) {
                         if (err) throw err;
                         if(row[0]) {
-                            res.json({'success': 'true'});
+                            res.json({'success': true});
                         } else {
-                            res.json({'success': 'false', 'message':'did not remove friend'});
+                            res.json({'success': false, 'message':'did not remove friend'});
                         }
                     });
                 } else {
-                    res.json({'success': 'false', 'message':'user not following'});
+                    res.json({'success': false, 'message':'user not following'});
                 }
             }
         });
@@ -95,7 +92,7 @@ module.exports = function(router) {
             if(result[0]) {
                 res.json(result);
             } else {
-                res.json({'success': 'false', 'message':'no friends found'});
+                res.json({'success': false, 'message':'no friends found'});
             }
         });
     });
@@ -105,9 +102,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result.affectedRows > 0) {
-                res.json({'success': 'true', 'id': result.insertId});
+                res.json({'success': true, 'id': result.insertId});
             } else {
-                res.json({'success': 'false', 'message':'post not created'});
+                res.json({'success': false, 'message':'post not created'});
             }
         });
     });
@@ -120,13 +117,13 @@ module.exports = function(router) {
                 if(result[0][key] == 1) {
                     Post.deletePost(req.body.post_id, function(err, row) {
                         if(row.affectedRows > 0) {
-                            res.json({'success': 'true'});
+                            res.json({'success': true});
                         } else {
-                            res.json({'success': 'false', 'message':'post not deleted'});
+                            res.json({'success': false, 'message':'post not deleted'});
                         }
                     });
                 } else {
-                    res.json({'success': 'false', 'message':'post does not exist'});
+                    res.json({'success': false, 'message':'post does not exist'});
                 }
             }
         });
@@ -136,9 +133,9 @@ module.exports = function(router) {
         Post.getPosts(req.params.id, function(err, result) {
             if (err) throw err;
             if(result[0]) {
-                res.json({'success': 'true', posts: result});
+                res.json(result);
             } else {
-                res.json({'success': 'false', 'message':'no posts found'});
+                res.json({'success': false, 'message':'no posts found'});
             }
         });
     });
@@ -148,9 +145,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                res.json({'success': true});
             } else {
-                res.json({'success': 'false', 'message':'like failed'});
+                res.json({'success': false, 'message':'like failed'});
             }
         });
     });
@@ -160,9 +157,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                res.json({'success': true});
             } else {
-                res.json({'success': 'false', 'message':'unlike failed'});
+                res.json({'success': false, 'message':'unlike failed'});
             }
         });
     });
@@ -172,21 +169,20 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result[0]) {
-                res.json({'success': 'true', 'goals': result});
+                res.json({'success': true, 'goals': result});
             } else {
-                res.json({'success': 'false', 'message':'no goals found'});
+                res.json({'success': false, 'message':'no goals found'});
             }
         });
     });
 
     router.get('/usergoals/:id', function(req, res) {
-        Goal.getUserGoals(req.params.user_id, function(err, result) {
+        Goal.getUserGoals(req.params.id, function(err, result) {
             if (err) throw err;
-            
             if(result[0]) {
-                res.json({'success': 'true', 'goals': result});
+                res.json({'success': true, 'goals': result});
             } else {
-                res.json({'success': 'false', 'message':'no goals found'});
+                res.json({'success': false, 'message':'no goals found'});
             }
         });
     });
@@ -199,13 +195,13 @@ module.exports = function(router) {
                 if(result[0][key] == 1) {
                     Goal.incrementGoal(req.body.user_id, req.body.goal_id, function(err, row) {
                         if(row.affectedRows > 0) {
-                            res.json({'success': 'true'});
+                            res.json({'success': true});
                         } else {
-                            res.json({'success': 'false', 'message':'goal not incremented'});
+                            res.json({'success': false, 'message':'goal not incremented'});
                         }
                     });
                 } else {
-                    res.json({'success': 'false', 'message':'post does not exist'});
+                    res.json({'success': false, 'message':'post does not exist'});
                 }
             }
         });
@@ -219,13 +215,13 @@ module.exports = function(router) {
                 if(result[0][key] == 1) {
                     Goal.incrementAccomplishment(req.body.user_id, req.body.goal_id, req.body.trophy_id, function(err, row) {
                         if(row.affectedRows > 0) {
-                            res.json({'success': 'true'});
+                            res.json({'success': true});
                         } else {
-                            res.json({'success': 'false', 'message':'goal not incremented'});
+                            res.json({'success': false, 'message':'goal not incremented'});
                         }
                     });
                 } else {
-                    res.json({'success': 'false', 'message':'goal does not exist'});
+                    res.json({'success': false, 'message':'goal does not exist'});
                 }
             }
         });
@@ -236,9 +232,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result[0]) {
-                res.json({'success': 'true', 'accomplishments': result});
+                res.json({'success': true, 'accomplishments': result});
             } else {
-                res.json({'success': 'false', 'message':'no acommplishments found'});
+                res.json({'success': false, 'message':'no acommplishments found'});
             }
         });
     });
@@ -248,9 +244,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result[0]) {
-                res.json({'success': 'true', 'accomplishments': result});
+                res.json({'success': true, 'accomplishments': result});
             } else {
-                res.json({'success': 'false', 'message':'no acommplishments found'});
+                res.json({'success': false, 'message':'no acommplishments found'});
             }
         });
     });
@@ -260,9 +256,9 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result[0]) {
-                res.json({'success': 'true', 'medication': result});
+                res.json({'success': true, 'medication': result});
             } else {
-                res.json({'success': 'false', 'message':'no medication found'});
+                res.json({'success': false, 'message':'no medication found'});
             }
         })
     });
@@ -272,9 +268,9 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result[0]) {
-                res.json({'success': 'true', 'medication': result});
+                res.json({'success': true, 'medication': result});
             } else {
-                res.json({'success': 'false', 'message':'no medication found'});
+                res.json({'success': false, 'message':'no medication found'});
             }
         });
     });
@@ -293,18 +289,18 @@ module.exports = function(router) {
                                 if (err) throw err;
 
                                 if(gal.insertId) {
-                                    res.json({'success': 'true', 'id': result.insertId});
+                                    res.json({'success': true, 'id': result.insertId});
                                 } else {
-                                    res.json({'false': 'true', 'message':'user goal not created'});
+                                    res.json({false: true, 'message':'user goal not created'});
                                 }
                             });
                         } else {
-                            res.json({'success': 'true', 'id': result.insertId});
+                            res.json({'success': true, 'id': result.insertId});
                         }
                     }
                 });
             } else {
-                res.json({'success': 'false', 'message':'notification not created'});
+                res.json({'success': false, 'message':'notification not created'});
             }
         });
     });
@@ -314,9 +310,9 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result.affectedRows > 0) {
-                res.json({'success': 'true'});
+                res.json({'success': true});
             } else {
-                res.json({'success': 'false', 'message':'notification not deleted'});
+                res.json({'success': false, 'message':'notification not deleted'});
             }
         });
     });
@@ -335,18 +331,18 @@ module.exports = function(router) {
                                 if (err) throw err;
 
                                 if(gal.insertId) {
-                                    res.json({'success': 'true', 'message':'notification updated'});
+                                    res.json({'success': true, 'message':'notification updated'});
                                 } else {
-                                    res.json({'false': 'true', 'message':'user goal not created'});
+                                    res.json({false: true, 'message':'user goal not created'});
                                 }
                             });
                         } else {
-                            res.json({'success': 'true', 'message':'notification updated'});
+                            res.json({'success': true, 'message':'notification updated'});
                         }
                     }
                 });
             } else {
-                res.json({'success': 'false', 'message':'notification not updated'});
+                res.json({'success': false, 'message':'notification not updated'});
             }
         });
     });
@@ -356,9 +352,9 @@ module.exports = function(router) {
             if (err) throw err;
 
             if(result[0]) {
-                res.json({'success': 'true', 'notifications': result});
+                res.json(result);
             } else {
-                res.json({'success': 'false', 'message':'no notifications found'});
+                res.json({'success': false, 'message':'no notifications found'});
             }
         });
     });
@@ -368,9 +364,9 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result) {
-                res.json({'success': 'true', 'notifications': result});
+                res.json({'success': true, 'notifications': result});
             } else {
-                res.json({'success': 'false', 'message':'no notifications today'});
+                res.json({'success': false, 'message':'no notifications today'});
             }
         });
     });
@@ -380,9 +376,9 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result[0]) {
-                res.json({'success': 'true', 'notifications': result});
+                res.json({'success': true, 'notifications': result});
             } else {
-                res.json({'success': 'false', 'message':'no notifications found'});
+                res.json({'success': false, 'message':'no notifications found'});
             }
         });
     });
@@ -409,8 +405,14 @@ module.exports = function(router) {
     });
 
     router.post('/upload', upload.single('avatar'), function(req, res) {
-        console.log(req.body.user_id);
-        res.end("done");
+        User.updateUserImage(req.body.user_id, uploadFolder+"/"+req.file.filename, function(err, result) {
+            if(err) throw err;
+            if(result.affectedRows > 0) {
+                res.json({'sucess': 'true'});
+            } else {
+                res.json({'sucess': 'false', 'message': 'could not update image at this time'});
+            }
+        });
     })
 
     return router;
