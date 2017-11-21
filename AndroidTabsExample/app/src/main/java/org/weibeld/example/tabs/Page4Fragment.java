@@ -57,7 +57,7 @@ public class Page4Fragment extends Fragment {
     }
 
     private ArrayList<friend> backgroundTask() {
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, "http://real-time-solutions.com:4000/api/friends/1",
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, "http://192.168.2.197:4000/api/friends/1",
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {

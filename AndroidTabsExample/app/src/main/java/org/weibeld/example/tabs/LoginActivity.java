@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                     builder.setMessage("Please fill in username and password.");
                     displayAlert("input_error");
                 } else {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://real-time-solutions.com:4000/api/login",
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.2.197:4000/api/login",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
