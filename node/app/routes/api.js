@@ -405,10 +405,11 @@ module.exports = function(router) {
     });
 
     router.post('/upload', upload.single('avatar'), function(req, res) {
-        User.updateUserImage(req.body.user_id, "http://real-time-solutions.com:4000/images/"+req.file.filename, function(err, result) {
+        var file = "http://real-time-solutions.com:4000/images/"+req.file.filename;
+        User.updateUserImage(req.body.user_id, file, function(err, result) {
             if(err) throw err;
             if(result.affectedRows > 0) {
-                res.json({'sucess': 'true'});
+                res.json({'sucess': 'true', 'url': file});
             } else {
                 res.json({'sucess': 'false', 'message': 'could not update image at this time'});
             }
