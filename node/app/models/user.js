@@ -6,7 +6,7 @@ var User = {
         ,[first, last, email, username, password], callback);
     },
     authenticate: function(username, password, callback) {
-        return db.query('Select user_id, permissions, status from users where username = ? and password = ?;',[username, password], callback);  
+        return db.query('Select * from users where username = ? and password = ?;',[username, password], callback);  
     },
     login: function(id, callback) {  
         return db.query("update users set status = 1 where user_id = ?", [id], callback);  
@@ -45,6 +45,9 @@ var User = {
     },
     removeFriend: function(user_id, remove_id, callback) {
         return db.query('delete from relationship where user_1_id = ? and user_2_id = ?', [remove_id, other_id], callback);
+    },
+    updateUserImage: function(user_id, url, callback) {
+        return db.query("update users set picture = ? where user_id = ?", [url, user_id], callback);
     }
 };  
 module.exports = User;
