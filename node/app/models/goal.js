@@ -2,7 +2,7 @@ var db = require('../../db');
 
 var Goal = {  
     getGoals: function(callback) {
-        return db.query('Select * goals', callback);  
+        return db.query('select * from goals', callback);  
     },
     getUserGoals: function(user_id, callback) {
         return db.query('select goals.goal_id, goals.title, goals.picture, user_goals.goal_count from user_goals left join goals on user_goals.goal_id = goals.goal_id where user_goals.user_id = ?'
@@ -32,7 +32,7 @@ var Goal = {
             ,[goal_id, user_id], callback)
         }
     },
-    getAccomplishments: function(user_id) {
+    getAccomplishments: function(user_id, callback) {
         return db.query('select goals.goal_id, goals.title, goals.picture, user_goals.gold_count, user_goals.silver_count, user_goals.bronze_count from user_goals left join goals on user_goals.goal_id = goals.goal_id where user_goals.user_id = ?'
         ,[user_id], callback)
     }

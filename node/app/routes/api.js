@@ -11,6 +11,7 @@ module.exports = function(router) {
 
     router.post('/login', function(req, res) {
         User.authenticate(req.body.username, req.body.password, function(err, result) {
+            if(err) throw err;
             if(result[0]) {
                 if(result[0].status == 1) {
                     res.json({'success': false, 'message':'user already logged in'});
@@ -50,6 +51,7 @@ module.exports = function(router) {
 
     router.post('/addfriend', function(req, res) {
         User.checkFollowing(req.body.user_id, req.body.friend_id, function(err, result) {
+            if(err) throw err;
             for(key in result[0]) {
                 if(result[0][key] != 1) {
                     User.addFriend(req.body.user_id, req.body.friend_id, function(err, row) {
@@ -69,11 +71,12 @@ module.exports = function(router) {
 
     router.delete('/friend', function(req, res) {
         User.checkFollowing(req.body.user_id, req.body.friend_id, function(err, result) {
+            if(err) throw err;
             for(key in result[0]) {
                 if(result[0][key] == 1) {
                     User.removeFriend(req.body.user_id, req.body.friend_id, function(err, row) {
                         if (err) throw err;
-                        if(row[0]) {
+                        if(row) {
                             res.json({'success': true});
                         } else {
                             res.json({'success': false, 'message':'did not remove friend'});
@@ -208,12 +211,13 @@ module.exports = function(router) {
     });
 
     router.post('/incrementaccomplishment', function(req, res) {
-        Goal.checkGoalExists(req.body.user_id, req.body.goal_id, req.body.trophy_id, function(err, result) {
+        Goal.checkGoalExists(req.body.user_id, req.body.goal_id, function(err, result) {
             if (err) throw err;
 
             for(key in result[0]) {
                 if(result[0][key] == 1) {
                     Goal.incrementAccomplishment(req.body.user_id, req.body.goal_id, req.body.trophy_id, function(err, row) {
+                        if (err) throw err;
                         if(row.affectedRows > 0) {
                             res.json({'success': true});
                         } else {
@@ -223,18 +227,6 @@ module.exports = function(router) {
                 } else {
                     res.json({'success': false, 'message':'goal does not exist'});
                 }
-            }
-        });
-    });
-
-    router.get('/accomplishments/:id', function(req, res) {
-        Goal.getAccomplishments(req.params.id, function(err, result) {
-            if (err) throw err;
-
-            if(result[0]) {
-                res.json({'success': true, 'accomplishments': result});
-            } else {
-                res.json({'success': false, 'message':'no acommplishments found'});
             }
         });
     });
@@ -306,7 +298,7 @@ module.exports = function(router) {
     });
 
     router.delete('/notification', function(req, res) {
-        Notify.createNotification(req.body.notification_id, function(err, result) {
+        Notify.deleteNotification(req.body.notification_id, function(err, result) {
             if (err) throw err;
             
             if(result.affectedRows > 0) {
@@ -322,7 +314,7 @@ module.exports = function(router) {
             if (err) throw err;
             
             if(result.affectedRows > 0) {
-                Goal.checkGoalExists(req.body.user_id,req.body.goal_id, function(err, row){
+                Goal.checkGoalExists(req.body.user_id, req.body.goal_id, function(err, row){
                     if (err) throw err;
 
                     for(key in row[0]) {
@@ -333,7 +325,7 @@ module.exports = function(router) {
                                 if(gal.insertId) {
                                     res.json({'success': true, 'message':'notification updated'});
                                 } else {
-                                    res.json({false: true, 'message':'user goal not created'});
+                                    res.json({'false': true, 'message':'user goal not created'});
                                 }
                             });
                         } else {

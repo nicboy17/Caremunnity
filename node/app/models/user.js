@@ -44,7 +44,7 @@ var User = {
         return db.query('insert into relationship (user_1_id, user_2_id) values (?, ?)', [user_id, other_id], callback);
     },
     removeFriend: function(user_id, remove_id, callback) {
-        return db.query('delete from relationship where user_1_id = ? and user_2_id = ?', [remove_id, other_id], callback);
+        return db.query('delete from relationship where user_1_id = ? and user_2_id = ?', [user_id, remove_id], callback);
     },
     updateUserImage: function(user_id, url, callback) {
         return db.query("update users set picture = ? where user_id = ?", [url, user_id], callback);
