@@ -12,11 +12,11 @@ var Notify = {
         ,[user_id, goal_id, medication_id, title, start_day, end_day, sunday, monday, tuesday, wednesday, thursday, friday, saturday, alert], callback);  
     },
     deleteNotification: function(notification_id, callback) {
-        return db.query('delete from notfication where notification_id = ?'
+        return db.query('delete from notifications where notification_id = ?'
         ,[notification_id], callback);
     },
     editNotification: function(notification_id, user_id, goal_id, medication_id, title, start_day, end_day, sunday, monday, tuesday, wednesday, thursday, friday, saturday, alert, callback) {
-        return db.query('update notifications set user_id = ? and goal_id = ? and medication_id = ? and title = ? and start_day = ? and end_day = ? and alert_sunday = ? and alert_monday = ? and alert_tuesday = ? and alert_wednesday = ? and alert_thursday = ? and alert_friday = ? and alert_saturday = ? and alert = ? where notification_id = ?'
+        return db.query('update notifications set user_id = ? , goal_id = ? , medication_id = ? , title = ? , start_day = ? , end_day = ? , alert_sunday = ? , alert_monday = ? , alert_tuesday = ? , alert_wednesday = ? , alert_thursday = ? , alert_friday = ? , alert_saturday = ? , alert = ? where notification_id = ?'
         ,[user_id, goal_id, medication_id, title, start_day, end_day, sunday, monday, tuesday, wednesday, thursday, friday, saturday, alert, notification_id], callback);  
     },
     getNotification: function(notification_id, callback) {
